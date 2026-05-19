@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poshan Shakti - Mid Day Meal Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2e7d32;
+    --green-light: #43a047;
+    --green-pale: #e8f5e9;
+    --orange: #e65100;
+    --orange-light: #ff6d00;
+    --yellow: #f9a825;
+    --white: #fff;
+    --gray: #f5f7f5;
+    --text: #1b2e1c;
+    --shadow: 0 4px 24px rgba(46,125,50,0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--gray); color: var(--text); }
+
+  /* NAV */
+  nav {
+    background: var(--green);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-brand img { height: 42px; border-radius: 8px; }
+  .nav-brand span { font-family: 'Baloo 2', cursive; font-size: 1.5rem; color: #fff; font-weight: 800; letter-spacing: 1px; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    color: #fff; text-decoration: none; padding: 8px 18px;
+    border-radius: 8px; font-weight: 600; font-size: 0.97rem;
+    transition: background 0.2s;
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.18); }
+  .nav-links a.btn-warn { background: var(--yellow); color: var(--text); }
+  .nav-links a.btn-warn:hover { background: #fbc02d; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(120deg, #1b5e20 0%, #2e7d32 60%, #388e3c 100%);
+    color: #fff;
+    padding: 70px 32px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('images/background.jpg') center/cover no-repeat;
+    opacity: 0.10;
+  }
+  .hero-content { position: relative; }
+  .hero h1 { font-family: 'Baloo 2', cursive; font-size: 2.8rem; font-weight: 800; margin-bottom: 14px; }
+  .hero p { font-size: 1.15rem; opacity: 0.9; max-width: 540px; margin: 0 auto 30px; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero-btns a {
+    padding: 13px 30px; border-radius: 10px; font-weight: 700;
+    font-size: 1rem; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .hero-btns a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .btn-main { background: var(--yellow); color: var(--text); }
+  .btn-sec { background: rgba(255,255,255,0.18); color: #fff; border: 2px solid rgba(255,255,255,0.4); }
+
+  /* STATS STRIP */
+  .stats {
+    display: flex; justify-content: center; gap: 0;
+    background: #fff; box-shadow: var(--shadow);
+  }
+  .stat {
+    flex: 1; max-width: 220px; text-align: center; padding: 22px 10px;
+    border-right: 1px solid #e8f5e9;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Baloo 2', cursive; font-size: 2rem; color: var(--green); font-weight: 800; }
+  .stat-label { font-size: 0.85rem; color: #666; margin-top: 2px; }
+
+  /* CARDS SECTION */
+  .section { padding: 48px 32px; max-width: 1100px; margin: 0 auto; }
+  .section h2 { font-family: 'Baloo 2', cursive; font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; color: var(--green); }
+  .section p.sub { color: #555; margin-bottom: 28px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+  .card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(46,125,50,0.16); }
+  .card img { width: 100%; height: 180px; object-fit: cover; }
+  .card-body { padding: 18px 20px 22px; flex: 1; display: flex; flex-direction: column; }
+  .card-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-light); margin-bottom: 6px; }
+  .card-body h3 { font-family: 'Baloo 2', cursive; font-size: 1.2rem; margin-bottom: 8px; }
+  .card-body p { font-size: 0.92rem; color: #666; flex: 1; }
+  .card-link { display: inline-block; margin-top: 14px; padding: 8px 18px; background: var(--green-pale); color: var(--green); border-radius: 8px; font-weight: 700; font-size: 0.9rem; }
+
+  /* FOOTER */
+  footer { background: #1b2e1c; color: #aed9b0; text-align: center; padding: 22px; font-size: 0.9rem; margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img src="images/logo.png" alt="Logo">
+    <span>POSHAN SHAKTI</span>
+  </a>
+  <div class="nav-links">
+    <a href="students.html"> Students</a>
+    <a href="nutrition.html"> Nutrition</a>
+    <a href="midday.html"> Mid Day Meal</a>
+    <a href="donation.html" class="btn-warn"> Donate</a>
+    <a href="login.html"> NGO Login</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1> Mid Day Meal Nutrition Tracker</h1>
+    <p>Helping government schools track student nutrition, analyze health data, and manage donations — all in one place.</p>
+    <div class="hero-btns">
+      <a href="students.html" class="btn-main"> Add Student</a>
+      <a href="midday.html" class="btn-sec"> Log Today's Meal</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="totalStudents">0</div><div class="stat-label">Students Enrolled</div></div>
+  <div class="stat"><div class="stat-num" id="mealsToday">0</div><div class="stat-label">Meals Logged Today</div></div>
+  <div class="stat"><div class="stat-num" id="avgCalories">0</div><div class="stat-label">Avg. Calories/Day</div></div>
+  <div class="stat"><div class="stat-num" id="totalDonations">0</div><div class="stat-label">Donations Received</div></div>
+</div>
+
+<div class="section">
+  <h2>What Would You Like To Do?</h2>
+  <p class="sub">Choose a section to get started</p>
+  <div class="cards">
+    <a class="card" href="students.html">
+      <img src="images/children.jpg" alt="Students">
+      <div class="card-body">
+        <div class="card-tag"> Module 1</div>
+        <h3>Student Records</h3>
+        <p>Add new students, view enrolled students, update height/weight, and manage class-wise records.</p>
+        <span class="card-link">Open Students →</span>
+      </div>
+    </a>
+    <a class="card" href="nutrition.html">
+      <img src="images/nutrition.jpg" alt="Nutrition">
+      <div class="card-body">
+        <div class="card-tag"> Module 2</div>
+        <h3>Nutrition & BMI Analysis</h3>
+        <p>View each student's calorie intake, protein levels, BMI status, and get health alerts for undernourished children.</p>
+        <span class="card-link">Open Nutrition →</span>
+      </div>
+    </a>
+    <a class="card" href="midday.html">
+      <img src="images/midday.jpg" alt="Mid Day Meal">
+      <div class="card-body">
+        <div class="card-tag"> Module 3</div>
+        <h3>Mid Day Meal Log</h3>
+        <p>Log daily meals with food items like roti, sabzi, milk, egg, dal, rice — and track nutritional values automatically.</p>
+        <span class="card-link">Log Meal →</span>
+      </div>
+    </a>
+    <a class="card" href="donation.html">
+      <img src="images/school.jpg" alt="Donations">
+      <div class="card-body">
+        <div class="card-tag"> Module 4</div>
+        <h3>Donation Management</h3>
+        <p>Accept money or food donations, view donor history, and track how donations are being used.</p>
+        <span class="card-link">Donate →</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<footer>Poshan Shakti | Mid Day Meal Nutrition Tracking System | Made with love for India's Children</footer>
+
+<script>
+  // Load live stats from localStorage (populated by other pages)
+  function updateStats() {
+    const students = JSON.parse(localStorage.getItem('ps_students') || '[]');
+    const meals = JSON.parse(localStorage.getItem('ps_meals') || '[]');
+    const donations = JSON.parse(localStorage.getItem('ps_donations') || '[]');
+    const today = new Date().toISOString().slice(0, 10);
+    const todayMeals = meals.filter(m => m.date === today);
+    const avgCal = todayMeals.length ? Math.round(todayMeals.reduce((s, m) => s + (m.totalCalories || 0), 0) / todayMeals.length) : 0;
+    document.getElementById('totalStudents').textContent = students.length;
+    document.getElementById('mealsToday').textContent = todayMeals.length;
+    document.getElementById('avgCalories').textContent = avgCal;
+    document.getElementById('totalDonations').textContent = donations.length;
+  }
+  updateStats();
+</script>
+</body>
+</html>

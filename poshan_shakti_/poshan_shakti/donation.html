@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate - Poshan Shakti</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#2e7d32;--yellow:#f9a825;--gray:#f5f7f5;--text:#1b2e1c;--shadow:0 4px 24px rgba(46,125,50,0.10);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Nunito',sans-serif;background:var(--gray);color:var(--text);}
+  nav{background:var(--green);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.15);}
+  .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+  .nav-brand img{height:42px;border-radius:8px;}
+  .nav-brand span{font-family:'Baloo 2',cursive;font-size:1.5rem;color:#fff;font-weight:800;}
+  .nav-links{display:flex;gap:8px;}
+  .nav-links a{color:#fff;text-decoration:none;padding:8px 18px;border-radius:8px;font-weight:600;font-size:0.97rem;transition:background 0.2s;}
+  .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,0.18);}
+  .nav-links a.btn-warn{background:var(--yellow);color:var(--text);}
+  .page-header{background:linear-gradient(90deg,#f57f17,#f9a825);color:#fff;padding:32px 40px;}
+  .page-header h1{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;}
+  .page-header p{opacity:0.9;margin-top:4px;}
+  .container{max-width:1100px;margin:0 auto;padding:32px;}
+  .layout{display:grid;grid-template-columns:400px 1fr;gap:28px;align-items:start;}
+  .form-card{background:#fff;border-radius:16px;padding:28px;box-shadow:var(--shadow);}
+  .form-card h2{font-family:'Baloo 2',cursive;color:#f57f17;margin-bottom:20px;font-size:1.3rem;}
+  .form-group{margin-bottom:14px;}
+  label{display:block;font-weight:700;font-size:0.88rem;margin-bottom:5px;color:#444;}
+  input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid #dde;border-radius:9px;font-size:0.97rem;font-family:'Nunito',sans-serif;transition:border 0.2s;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:#f9a825;}
+  textarea{resize:vertical;min-height:80px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .quick-amounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .qa-btn{padding:7px 14px;border:2px solid #f9a825;border-radius:8px;background:#fff;color:#f57f17;font-weight:700;cursor:pointer;font-size:0.88rem;transition:all 0.15s;}
+  .qa-btn:hover,.qa-btn.active{background:#f9a825;color:#fff;}
+  .btn-submit{width:100%;padding:13px;background:linear-gradient(90deg,#f57f17,#f9a825);color:#fff;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;margin-top:8px;}
+  .success-msg{display:none;background:#e8f5e9;color:#2e7d32;padding:12px;border-radius:8px;margin-top:12px;font-weight:700;text-align:center;}
+
+  .table-card{background:#fff;border-radius:16px;padding:28px;box-shadow:var(--shadow);}
+  .table-card h2{font-family:'Baloo 2',cursive;color:#f57f17;margin-bottom:18px;font-size:1.3rem;}
+  .total-raised{background:linear-gradient(90deg,#f57f17,#f9a825);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;}
+  .total-raised .amount{font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;}
+  .total-raised .lbl{font-size:0.88rem;opacity:0.85;}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  thead{background:#fff8e1;}
+  th{padding:11px 10px;text-align:left;font-weight:700;color:#f57f17;font-size:0.82rem;text-transform:uppercase;}
+  td{padding:10px 10px;border-bottom:1px solid #f5f5f5;}
+  tr:hover td{background:#fffdf0;}
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;}
+  .badge-money{background:#e8f5e9;color:#2e7d32;}
+  .badge-food{background:#fff3e0;color:#e65100;}
+  .btn-del{background:#ffebee;color:#c62828;border:none;padding:4px 9px;border-radius:7px;cursor:pointer;font-size:0.8rem;font-weight:700;}
+  .empty-state{text-align:center;padding:40px;color:#aaa;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img src="images/logo.png" alt="Logo">
+    <span>POSHAN SHAKTI</span>
+  </a>
+  <div class="nav-links">
+    <a href="students.html"> Students</a>
+    <a href="nutrition.html"> Nutrition</a>
+    <a href="midday.html"> Mid Day Meal</a>
+    <a href="donation.html" class="active btn-warn"> Donate</a>
+    <a href="login.html"> Login</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1> Donation Management</h1>
+  <p>Every contribution helps feed a child. Thank you for your generosity!</p>
+</div>
+
+<div class="container">
+  <div class="layout">
+    <div class="form-card">
+      <h2>Make a Donation</h2>
+      <div class="form-group">
+        <label>Donor Full Name *</label>
+        <input type="text" id="donorName" placeholder="Your full name">
+      </div>
+      <div class="row2">
+        <div class="form-group">
+          <label>Mobile Number *</label>
+          <input type="tel" id="donorPhone" placeholder="10-digit number">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="donorEmail" placeholder="Optional">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Donation Type *</label>
+        <select id="donationType" onchange="toggleDonationType()">
+          <option value="">Select type</option>
+          <option value="Money"> Money</option>
+          <option value="Food"> Food</option>
+          <option value="Other"> Other</option>
+        </select>
+      </div>
+
+      <!-- Money section -->
+      <div id="moneySection" style="display:none;">
+        <div class="form-group">
+          <label>Amount (₹) *</label>
+          <div class="quick-amounts">
+            <button class="qa-btn" onclick="setAmount(100)">₹100</button>
+            <button class="qa-btn" onclick="setAmount(500)">₹500</button>
+            <button class="qa-btn" onclick="setAmount(1000)">₹1000</button>
+            <button class="qa-btn" onclick="setAmount(5000)">₹5000</button>
+          </div>
+          <input type="number" id="donorAmount" placeholder="Enter amount in ₹" min="1">
+        </div>
+      </div>
+
+      <!-- Food section -->
+      <div id="foodSection" style="display:none;">
+        <div class="form-group">
+          <label>Food Item Description *</label>
+          <textarea id="foodDetails" placeholder="e.g. 50 kg rice, 20 litres milk, 100 eggs..."></textarea>
+        </div>
+      </div>
+
+      <!-- Other section -->
+      <div id="otherSection" style="display:none;">
+        <div class="form-group">
+          <label>Details *</label>
+          <textarea id="otherDetails" placeholder="Describe what you are donating..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Message (Optional)</label>
+        <textarea id="donorMessage" placeholder="A message for the children..." style="min-height:60px;"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitDonation()"> Submit Donation</button>
+      <div class="success-msg" id="successMsg">🙏 Thank you! Donation recorded successfully!</div>
+    </div>
+
+    <div class="table-card">
+      <h2>📋 Donation Records</h2>
+      <div class="total-raised">
+        <div><div class="lbl">Total Money Raised</div><div class="amount">₹<span id="totalMoney">0</span></div></div>
+        <div style="text-align:right"><div class="lbl">Total Donations</div><div class="amount"><span id="totalCount">0</span></div></div>
+      </div>
+      <div id="donationTable"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setAmount(val) {
+    document.getElementById('donorAmount').value = val;
+    document.querySelectorAll('.qa-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function toggleDonationType() {
+    const type = document.getElementById('donationType').value;
+    document.getElementById('moneySection').style.display = type === 'Money' ? 'block' : 'none';
+    document.getElementById('foodSection').style.display  = type === 'Food'  ? 'block' : 'none';
+    document.getElementById('otherSection').style.display = type === 'Other' ? 'block' : 'none';
+  }
+
+  function submitDonation() {
+    const name = document.getElementById('donorName').value.trim();
+    const phone = document.getElementById('donorPhone').value.trim();
+    const type = document.getElementById('donationType').value;
+    if (!name || !phone || !type) { alert('⚠️ Please fill Name, Phone, and Donation Type.'); return; }
+
+    let detail = '';
+    let amount = 0;
+    if (type === 'Money') {
+      amount = parseFloat(document.getElementById('donorAmount').value);
+      if (!amount || amount <= 0) { alert('⚠️ Enter a valid amount.'); return; }
+      detail = '₹' + amount;
+    } else if (type === 'Food') {
+      detail = document.getElementById('foodDetails').value.trim();
+      if (!detail) { alert('⚠️ Please describe the food donation.'); return; }
+    } else {
+      detail = document.getElementById('otherDetails').value.trim();
+      if (!detail) { alert('⚠️ Please describe the donation.'); return; }
+    }
+
+    const donation = {
+      id: Date.now(),
+      name, phone, email: document.getElementById('donorEmail').value.trim(),
+      type, detail, amount,
+      message: document.getElementById('donorMessage').value.trim(),
+      date: new Date().toISOString().slice(0,10)
+    };
+
+    const donations = JSON.parse(localStorage.getItem('ps_donations') || '[]');
+    donations.unshift(donation);
+    localStorage.setItem('ps_donations', JSON.stringify(donations));
+    renderDonations();
+
+    ['donorName','donorPhone','donorEmail','donorAmount','foodDetails','otherDetails','donorMessage'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    document.getElementById('donationType').value = '';
+    toggleDonationType();
+
+    const msg = document.getElementById('successMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 4000);
+  }
+
+  function deleteDonation(id) {
+    if (!confirm('Delete this donation record?')) return;
+    const donations = JSON.parse(localStorage.getItem('ps_donations') || '[]').filter(d => d.id !== id);
+    localStorage.setItem('ps_donations', JSON.stringify(donations));
+    renderDonations();
+  }
+
+  function renderDonations() {
+    const donations = JSON.parse(localStorage.getItem('ps_donations') || '[]');
+    const totalMoney = donations.filter(d => d.type === 'Money').reduce((s,d) => s + (d.amount||0), 0);
+    document.getElementById('totalMoney').textContent = totalMoney.toLocaleString('en-IN');
+    document.getElementById('totalCount').textContent = donations.length;
+
+    const el = document.getElementById('donationTable');
+    if (donations.length === 0) { el.innerHTML = '<div class="empty-state">❤️<br>No donations yet.</div>'; return; }
+    el.innerHTML = `<table>
+      <thead><tr><th>Date</th><th>Donor</th><th>Type</th><th>Details</th><th>Message</th><th></th></tr></thead>
+      <tbody>
+      ${donations.map(d => `<tr>
+        <td>${d.date}</td>
+        <td><strong>${d.name}</strong><br><span style="color:#999;font-size:0.78rem">${d.phone}</span></td>
+        <td><span class="badge ${d.type==='Money'?'badge-money':'badge-food'}">${d.type==='Money'?'💰':'🍱'} ${d.type}</span></td>
+        <td>${d.detail}</td>
+        <td style="font-size:0.82rem;color:#777;font-style:italic">${d.message||'—'}</td>
+        <td><button class="btn-del" onclick="deleteDonation(${d.id})">🗑</button></td>
+      </tr>`).join('')}
+      </tbody></table>`;
+  }
+
+  renderDonations();
+</script>
+</body>
+</html>

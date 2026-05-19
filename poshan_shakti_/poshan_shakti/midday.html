@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mid Day Meal - Poshan Shakti</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #f4f6f4; }
+  .navbar { background-color: #27ae60 !important; padding: 10px 20px; }
+  .logo { height: 50px; border-radius: 4px; }
+  .navbar-brand { font-size: 1.4rem; font-weight: 700; color: #fff !important; letter-spacing: 1px; }
+  .nav-link-plain { color: #fff; text-decoration: none; padding: 7px 16px; border-radius: 4px; font-size: 0.95rem; font-weight: 600; }
+  .nav-link-plain:hover, .nav-link-plain.active { background: rgba(255,255,255,0.18); color: #fff; }
+  .btn-donate-nav { background: #f1c40f; color: #222; border: none; padding: 7px 16px; border-radius: 4px; font-weight: 600; font-size: 0.95rem; text-decoration: none; }
+  .btn-donate-nav:hover { background: #d4ac0d; color: #222; }
+
+  .page-header { background: #e65100; color: #fff; padding: 28px 32px; }
+  .page-header h2 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .page-header p { margin: 4px 0 0; opacity: 0.85; }
+
+  .main { max-width: 1100px; margin: 32px auto; padding: 0 20px; display: grid; grid-template-columns: 420px 1fr; gap: 24px; align-items: start; }
+  .card-box { background: #fff; border-radius: 8px; padding: 26px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+  .card-box h4 { font-size: 1.1rem; font-weight: 700; color: #e65100; margin-bottom: 6px; border-bottom: 2px solid #fff3e0; padding-bottom: 10px; }
+  .card-box p.hint { color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+
+  label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; color: #444; }
+  input, select { width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.93rem; margin-bottom: 12px; font-family: Arial, sans-serif; }
+  input:focus, select:focus { outline: none; border-color: #e65100; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Food selection grid */
+  .food-section-title { font-weight: 700; font-size: 0.88rem; color: #444; margin-bottom: 10px; }
+  .food-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .food-tile {
+    border: 2px solid #ddd; border-radius: 8px; padding: 10px 6px;
+    text-align: center; cursor: pointer; transition: all 0.15s; background: #fff;
+    user-select: none;
+  }
+  .food-tile:hover { border-color: #e65100; background: #fff3e0; }
+  .food-tile.selected { border-color: #e65100; background: #fff3e0; }
+  .food-tile .food-name { font-size: 0.82rem; font-weight: 700; color: #333; margin-top: 4px; }
+  .food-tile .food-kcal { font-size: 0.7rem; color: #aaa; }
+
+  /* Qty section */
+  .qty-box { background: #fff8f0; border: 1px solid #ffe0b2; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  .qty-box h5 { font-size: 0.9rem; font-weight: 700; color: #e65100; margin-bottom: 12px; }
+  .qty-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .qty-row label { flex: 1; font-size: 0.85rem; font-weight: 600; color: #555; margin: 0; }
+  .qty-row input { width: 75px; padding: 6px 10px; margin: 0; text-align: center; }
+  .qty-row .unit { font-size: 0.75rem; color: #999; width: 48px; }
+
+  /* Nutrition preview */
+  .nut-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  .nut-box h5 { font-size: 0.9rem; font-weight: 700; color: #555; margin-bottom: 10px; }
+  .nut-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.88rem; }
+  .nut-row .val { font-weight: 700; color: #e65100; }
+
+  .btn-save { width: 100%; padding: 11px; background: #e65100; color: #fff; border: none; border-radius: 5px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+  .btn-save:hover { background: #bf360c; }
+  .alert-success { display: none; background: #e8f5e9; color: #27ae60; padding: 10px; border-radius: 5px; margin-top: 10px; font-weight: 600; text-align: center; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  thead { background: #fff3e0; }
+  th { padding: 10px 8px; text-align: left; font-weight: 700; color: #e65100; font-size: 0.8rem; text-transform: uppercase; }
+  td { padding: 10px 8px; border-bottom: 1px solid #f5f5f5; }
+  tr:hover td { background: #fffbf7; }
+  .food-tag { background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin: 2px; }
+  .btn-del { background: #ffebee; color: #c62828; border: none; padding: 4px 9px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+  .empty { text-align: center; padding: 40px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-2">
+      <img src="images/logo.png" class="logo" alt="Logo">
+      <span class="navbar-brand mb-0">POSHAN SHAKTI</span>
+    </div>
+    <div class="d-flex align-items-center gap-1">
+      <a href="index.html" class="nav-link-plain">Home</a>
+      <a href="students.html" class="nav-link-plain">Students</a>
+      <a href="nutrition.html" class="nav-link-plain">Nutrition</a>
+      <a href="midday.html" class="nav-link-plain active">Mid Day Meal</a>
+      <a href="login.html" class="nav-link-plain">NGO Login</a>
+      <a href="donation.html" class="btn-donate-nav ms-2">Donate</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h2>Mid Day Meal Log</h2>
+  <p>Record daily meals served to students — select food items and quantities</p>
+</div>
+
+<div class="main">
+  <div class="card-box">
+    <h4>Log Today's Meal</h4>
+    <p class="hint">Select food items served and enter quantities per student</p>
+
+    <div class="row2">
+      <div>
+        <label>Date *</label>
+        <input type="date" id="mDate">
+      </div>
+      <div>
+        <label>Class</label>
+        <select id="mClass">
+          <option value="All Classes">All Classes</option>
+          <option>Class 1</option><option>Class 2</option><option>Class 3</option>
+          <option>Class 4</option><option>Class 5</option><option>Class 6</option>
+          <option>Class 7</option><option>Class 8</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Number of Students Fed *</label>
+    <input type="number" id="mStudents" placeholder="e.g. 45" min="1">
+
+    <div class="food-section-title">Select Food Items Served:</div>
+    <div class="food-grid" id="foodGrid"></div>
+
+    <div class="qty-box" id="qtyBox" style="display:none;">
+      <h5>Quantity Per Student</h5>
+      <div id="qtyInputs"></div>
+    </div>
+
+    <div class="nut-box">
+      <h5>Estimated Nutrition Per Student</h5>
+      <div class="nut-row"><span>Calories</span><span class="val" id="pCal">0 kcal</span></div>
+      <div class="nut-row"><span>Protein</span><span class="val" id="pProt">0 g</span></div>
+      <div class="nut-row"><span>Carbohydrates</span><span class="val" id="pCarb">0 g</span></div>
+      <div class="nut-row"><span>Fat</span><span class="val" id="pFat">0 g</span></div>
+    </div>
+
+    <button class="btn-save" onclick="logMeal()">Save Meal Record</button>
+    <div class="alert-success" id="successMsg">Meal logged successfully!</div>
+  </div>
+
+  <div class="card-box">
+    <h4>Meal History</h4>
+    <div id="mealTable"><div class="empty">No meals logged yet.</div></div>
+  </div>
+</div>
+
+<script>
+const FOODS = [
+  { id:'roti',    name:'Roti',    calPer:80,  unit:'pieces', prot:2.5,  carb:16,   fat:0.4  },
+  { id:'rice',    name:'Rice',    calPer:1.3, unit:'grams',  prot:0.03, carb:0.28, fat:0.003},
+  { id:'dal',     name:'Dal',     calPer:0.7, unit:'ml',     prot:0.05, carb:0.09, fat:0.01 },
+  { id:'sabzi',   name:'Sabzi',   calPer:0.6, unit:'grams',  prot:0.02, carb:0.10, fat:0.01 },
+  { id:'milk',    name:'Milk',    calPer:0.6, unit:'ml',     prot:0.03, carb:0.05, fat:0.03 },
+  { id:'egg',     name:'Egg',     calPer:70,  unit:'pieces', prot:6,    carb:0.5,  fat:5    },
+  { id:'banana',  name:'Banana',  calPer:89,  unit:'pieces', prot:1.1,  carb:23,   fat:0.3  },
+  { id:'khichdi', name:'Khichdi', calPer:1.1, unit:'grams',  prot:0.04, carb:0.18, fat:0.02 },
+  { id:'poha',    name:'Poha',    calPer:1.0, unit:'grams',  prot:0.02, carb:0.22, fat:0.01 },
+];
+
+const selected = {};
+document.getElementById('mDate').value = new Date().toISOString().slice(0,10);
+
+// Build food grid (plain tiles, no emojis)
+document.getElementById('foodGrid').innerHTML = FOODS.map(f =>
+  `<div class="food-tile" id="ft_${f.id}" onclick="toggleFood('${f.id}')">
+    <div class="food-name">${f.name}</div>
+    <div class="food-kcal">${f.unit==='pieces' ? f.calPer+' kcal/pc' : f.calPer+' kcal/'+f.unit.slice(0,1)}</div>
+  </div>`
+).join('');
+
+function toggleFood(id) {
+  const el = document.getElementById('ft_'+id);
+  if (selected[id]) { delete selected[id]; el.classList.remove('selected'); }
+  else { selected[id] = 1; el.classList.add('selected'); }
+  updateQty();
+}
+
+function updateQty() {
+  const ids = Object.keys(selected);
+  const box = document.getElementById('qtyBox');
+  if (!ids.length) { box.style.display = 'none'; updatePreview(); return; }
+  box.style.display = 'block';
+  document.getElementById('qtyInputs').innerHTML = ids.map(id => {
+    const f = FOODS.find(x => x.id === id);
+    return `<div class="qty-row">
+      <label>${f.name}</label>
+      <input type="number" id="q_${id}" value="1" min="0" step="0.5" oninput="updatePreview()">
+      <span class="unit">${f.unit}</span>
+    </div>`;
+  }).join('');
+  updatePreview();
+}
+
+function updatePreview() {
+  let cal=0, prot=0, carb=0, fat=0;
+  Object.keys(selected).forEach(id => {
+    const f = FOODS.find(x => x.id === id);
+    const q = parseFloat(document.getElementById('q_'+id)?.value) || 0;
+    cal += f.calPer*q; prot += f.prot*q; carb += f.carb*q; fat += f.fat*q;
+  });
+  document.getElementById('pCal').textContent  = Math.round(cal)+' kcal';
+  document.getElementById('pProt').textContent = Math.round(prot*10)/10+' g';
+  document.getElementById('pCarb').textContent = Math.round(carb*10)/10+' g';
+  document.getElementById('pFat').textContent  = Math.round(fat*10)/10+' g';
+}
+
+function logMeal() {
+  const date = document.getElementById('mDate').value;
+  const cls  = document.getElementById('mClass').value;
+  const count= document.getElementById('mStudents').value;
+  if (!date || !count || !Object.keys(selected).length) {
+    alert('Please fill date, students fed, and select at least one food item.');
+    return;
+  }
+  let cal=0, prot=0, carb=0, fat=0;
+  const items = [];
+  Object.keys(selected).forEach(id => {
+    const f = FOODS.find(x => x.id === id);
+    const q = parseFloat(document.getElementById('q_'+id)?.value) || 1;
+    cal += f.calPer*q; prot += f.prot*q; carb += f.carb*q; fat += f.fat*q;
+    items.push({ name:f.name, qty:q, unit:f.unit });
+  });
+  const meal = { id:Date.now(), date, class:cls, studentsFed:parseInt(count), items,
+    totalCalories:Math.round(cal), totalProtein:Math.round(prot*10)/10,
+    totalCarb:Math.round(carb*10)/10, totalFat:Math.round(fat*10)/10 };
+  const meals = JSON.parse(localStorage.getItem('ps_meals')||'[]');
+  meals.unshift(meal);
+  localStorage.setItem('ps_meals', JSON.stringify(meals));
+  renderMeals();
+
+  Object.keys(selected).forEach(id => { delete selected[id]; document.getElementById('ft_'+id)?.classList.remove('selected'); });
+  document.getElementById('mStudents').value = '';
+  document.getElementById('qtyBox').style.display = 'none';
+  updatePreview();
+
+  const msg = document.getElementById('successMsg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 3000);
+}
+
+function deleteMeal(id) {
+  if (!confirm('Delete this meal record?')) return;
+  const meals = JSON.parse(localStorage.getItem('ps_meals')||'[]').filter(m => m.id !== id);
+  localStorage.setItem('ps_meals', JSON.stringify(meals));
+  renderMeals();
+}
+
+function renderMeals() {
+  const meals = JSON.parse(localStorage.getItem('ps_meals')||'[]');
+  const el = document.getElementById('mealTable');
+  if (!meals.length) { el.innerHTML = '<div class="empty">No meals logged yet.</div>'; return; }
+  el.innerHTML = `<table>
+    <thead><tr><th>Date</th><th>Class</th><th>Students</th><th>Food Items</th><th>Calories</th><th>Protein</th><th></th></tr></thead>
+    <tbody>${meals.map(m => `<tr>
+      <td>${m.date}</td><td>${m.class}</td><td>${m.studentsFed}</td>
+      <td>${m.items.map(i=>`<span class="food-tag">${i.name}</span>`).join('')}</td>
+      <td><strong>${m.totalCalories}</strong> kcal</td>
+      <td>${m.totalProtein} g</td>
+      <td><button class="btn-del" onclick="deleteMeal(${m.id})">Delete</button></td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+renderMeals();
+</script>
+</body>
+</html>
